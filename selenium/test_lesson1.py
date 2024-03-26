@@ -4,39 +4,46 @@ from selenium.common.exceptions import NoSuchElementException
 import random
 import pytest
 
-browser = webdriver.Chrome()
+
 base_url = 'https://www.saucedemo.com/'
-accepted_usernames = ['standard_user', 'locked_out_user', 'problem_user', 'performance_glitch_user',
+accepted_usernames = ['standard_user',  'problem_user', 'performance_glitch_user',
                       'error_user', 'visual_user']
 PASSWORD = 'secret_sauce'
 
 
-def login():
+def get_browser():
+    """this method returns an instance of a browser"""
+    return webdriver.Chrome()
+
+
+def login(browser):
     """this method is used to log in user in system"""
     browser.get(base_url)
     username_field = browser.find_element(By.ID, 'user-name')
+    username_field.clear()
     username_field.send_keys(random.choice(accepted_usernames))
     password_field = browser.find_element(By.ID, 'password')
+    password_field.clear()
     password_field.send_keys(PASSWORD)
     login_button = browser.find_element(By.ID, 'login-button')
     login_button.click()
 
 
-def add_good_to_basket_from_catalogue():
+def add_good_to_basket_from_catalogue(browser):
     """this method is used to add the first good on the catalogue page to basket"""
     add_to_basket_button = browser.find_element(By.CSS_SELECTOR,
                                                 'div#inventory_container.inventory_container>div>div:first-child button')
     add_to_basket_button.click()
 
 
-def go_to_good_page():
+def go_to_good_page(browser):
     """this method is used to move to the page of the first good in the catalogue"""
     good_title = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
                                                        'div.inventory_item_name')
     good_title.click()
 
 
-def add_good_to_basket_from_good_page():
+def add_good_to_basket_from_good_page(browser):
     """this method is used for adding a good to basket from the good page"""
     add_button = browser.find_element(By.CSS_SELECTOR, '.inventory_details_desc_container button')
     add_button.click()
@@ -45,6 +52,7 @@ def add_good_to_basket_from_good_page():
 @pytest.mark.positive_path
 @pytest.mark.auth
 def test_positive_auth():
+    browser = get_browser()
     target_url = 'https://www.saucedemo.com/inventory.html'
     browser.get(base_url)
     username_field = browser.find_element(By.ID, 'user-name')
@@ -59,6 +67,7 @@ def test_positive_auth():
 
 @pytest.mark.auth
 def test_negative_auth():
+    browser = get_browser()
     error_message = 'Epic sadface: Username and password do not match any user in this service'
     browser.get(base_url)
     username_field = browser.find_element(By.ID, 'user-name')
@@ -79,8 +88,9 @@ def test_negative_auth():
 @pytest.mark.positive_path
 @pytest.mark.basket
 def test_add_good_to_basket():
-    login()
-    add_good_to_basket_from_catalogue()
+    browser = get_browser()
+    login(browser)
+    add_good_to_basket_from_catalogue(browser)
     basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
     assert basket_badge.text == '1'
     browser.quit()
@@ -89,8 +99,9 @@ def test_add_good_to_basket():
 @pytest.mark.positive_path
 @pytest.mark.basket
 def test_remove_good_from_basket():
-    login()
-    add_good_to_basket_from_catalogue()
+    browser = get_browser()
+    login(browser)
+    add_good_to_basket_from_catalogue(browser)
     basket_link = browser.find_element(By.CLASS_NAME, 'shopping_cart_link')
     basket_link.click()
     remove_button = browser.find_element(By.CSS_SELECTOR, '#cart_contents_container>div>div button.cart_button')
@@ -101,10 +112,11 @@ def test_remove_good_from_basket():
 
 @pytest.mark.good_page
 def test_go_to_good_page_through_image():
-    login()
+    browser = get_browser()
+    login(browser)
     good_name = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
                                                       'div.inventory_item_name').text
-    good_image = browser.find_element(By.CSS_SELECTOR, '#inventory_container>div>div:first-child '
+    good_image = browser.find_element(By.CSS_SELECTOR, '#inventory_container>div>div:first-child'
                                                        '>div.inventory_item_img>a')
     good_image.click()
     assert browser.find_element(By.CLASS_NAME, 'inventory_details_name').text == good_name
@@ -113,7 +125,8 @@ def test_go_to_good_page_through_image():
 
 @pytest.mark.good_page
 def test_go_to_good_page_through_title():
-    login()
+    browser = get_browser()
+    login(browser)
     good_title = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
                                                       'div.inventory_item_name')
     good_name = good_title.text
@@ -125,9 +138,10 @@ def test_go_to_good_page_through_title():
 @pytest.mark.basket
 @pytest.mark.good_page
 def test_add_good_to_basket_from_good_page():
-    login()
-    go_to_good_page()
-    add_good_to_basket_from_good_page()
+    browser = get_browser()
+    login(browser)
+    go_to_good_page(browser)
+    add_good_to_basket_from_good_page(browser)
     basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
     assert basket_badge.text == '1'
     browser.quit()
@@ -136,9 +150,10 @@ def test_add_good_to_basket_from_good_page():
 @pytest.mark.basket
 @pytest.mark.good_page
 def test_remove_good_from_good_page():
-    login()
-    go_to_good_page()
-    add_good_to_basket_from_good_page()
+    browser = get_browser()
+    login(browser)
+    go_to_good_page(browser)
+    add_good_to_basket_from_good_page(browser)
     remove_button = browser.find_element(By.CSS_SELECTOR, '.inventory_details_desc_container button')
     remove_button.click()
     assert len(browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')) == 0
