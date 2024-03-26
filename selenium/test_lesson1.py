@@ -21,12 +21,15 @@ def get_browser():
 def login(browser):
     """this method is used to log in user in system"""
     browser.get(base_url)
+
     username_field = browser.find_element(By.ID, 'user-name')
     username_field.clear()
     username_field.send_keys(random.choice(accepted_usernames))
+
     password_field = browser.find_element(By.ID, 'password')
     password_field.clear()
     password_field.send_keys(PASSWORD)
+
     login_button = browser.find_element(By.ID, 'login-button')
     login_button.click()
 
@@ -62,13 +65,18 @@ def go_to_basket(browser):
 def test_positive_auth():
     browser = get_browser()
     target_url = 'https://www.saucedemo.com/inventory.html'
+
     browser.get(base_url)
+
     username_field = browser.find_element(By.ID, 'user-name')
     username_field.send_keys(random.choice(accepted_usernames))
+
     password_field = browser.find_element(By.ID, 'password')
     password_field.send_keys(PASSWORD)
+
     login_button = browser.find_element(By.ID, 'login-button')
     login_button.click()
+
     assert browser.current_url == target_url
     browser.quit()
 
@@ -77,11 +85,15 @@ def test_positive_auth():
 def test_negative_auth():
     browser = get_browser()
     error_message = 'Epic sadface: Username and password do not match any user in this service'
+
     browser.get(base_url)
+
     username_field = browser.find_element(By.ID, 'user-name')
     username_field.send_keys('user')
+
     password_field = browser.find_element(By.ID, 'password')
     password_field.send_keys('user')
+
     login_button = browser.find_element(By.ID, 'login-button')
     login_button.click()
     try:
@@ -89,6 +101,7 @@ def test_negative_auth():
     except NoSuchElementException:
         error_container = None
         print('There are no error container')
+
     assert error_container.text == error_message
     browser.quit()
 
@@ -97,8 +110,10 @@ def test_negative_auth():
 @pytest.mark.basket
 def test_add_good_to_basket():
     browser = get_browser()
+
     login(browser)
     add_good_to_basket_from_catalogue(browser)
+
     basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
     assert basket_badge.text == '1'
     browser.quit()
@@ -108,9 +123,11 @@ def test_add_good_to_basket():
 @pytest.mark.basket
 def test_remove_good_from_basket():
     browser = get_browser()
+
     login(browser)
     add_good_to_basket_from_catalogue(browser)
     go_to_basket(browser)
+
     remove_button = browser.find_element(By.CSS_SELECTOR, '#cart_contents_container>div>div button.cart_button')
     remove_button.click()
     assert len(browser.find_elements(By.CSS_SELECTOR, '.cart_item')) == 0
@@ -120,7 +137,9 @@ def test_remove_good_from_basket():
 @pytest.mark.good_page
 def test_go_to_good_page_through_image():
     browser = get_browser()
+
     login(browser)
+
     good_name = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
                                                       'div.inventory_item_name').text
     good_image = browser.find_element(By.CSS_SELECTOR, '#inventory_container>div>div:first-child'
@@ -133,7 +152,9 @@ def test_go_to_good_page_through_image():
 @pytest.mark.good_page
 def test_go_to_good_page_through_title():
     browser = get_browser()
+
     login(browser)
+
     good_title = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
                                                       'div.inventory_item_name')
     good_name = good_title.text
@@ -146,9 +167,11 @@ def test_go_to_good_page_through_title():
 @pytest.mark.good_page
 def test_add_good_to_basket_from_good_page():
     browser = get_browser()
+
     login(browser)
     go_to_good_page(browser)
     add_good_to_basket_from_good_page(browser)
+
     basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
     assert basket_badge.text == '1'
     browser.quit()
@@ -158,9 +181,11 @@ def test_add_good_to_basket_from_good_page():
 @pytest.mark.good_page
 def test_remove_good_from_good_page():
     browser = get_browser()
+
     login(browser)
     go_to_good_page(browser)
     add_good_to_basket_from_good_page(browser)
+
     remove_button = browser.find_element(By.CSS_SELECTOR, '.inventory_details_desc_container button')
     remove_button.click()
     assert len(browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')) == 0
@@ -202,6 +227,45 @@ def test_make_order():
     assert successful_message == expected_message
     browser.quit()
 
+
+@pytest.mark.filter
+def test_filter_a_to_z():
+    browser = get_browser()
+
+    login(browser)
+
+    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon.click()
+
+    az_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="az"]')
+    az_filter.click()
+
+    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_name'))
+    name_items = [i.text for i in item_list]
+    sorted_items = sorted(name_items)
+
+    assert name_items == sorted_items
+    browser.quit()
+
+
+@pytest.mark.filter
+def test_filter_z_to_a():
+    browser = get_browser()
+
+    login(browser)
+
+    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon.click()
+
+    za_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="za"]')
+    za_filter.click()
+
+    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_name'))
+    name_items = [i.text for i in item_list]
+    sorted_items = sorted(name_items, reverse=True)
+
+    assert name_items == sorted_items
+    browser.quit()
 
 
 
