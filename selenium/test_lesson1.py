@@ -3,12 +3,14 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import random
 import pytest
+from faker import Faker
 
 
 base_url = 'https://www.saucedemo.com/'
 accepted_usernames = ['standard_user',  'problem_user', 'performance_glitch_user',
                       'error_user', 'visual_user']
 PASSWORD = 'secret_sauce'
+fake = Faker()
 
 
 def get_browser():
@@ -47,6 +49,12 @@ def add_good_to_basket_from_good_page(browser):
     """this method is used for adding a good to basket from the good page"""
     add_button = browser.find_element(By.CSS_SELECTOR, '.inventory_details_desc_container button')
     add_button.click()
+
+
+def go_to_basket(browser):
+    """this method is used to move to basket page"""
+    basket_link = browser.find_element(By.CLASS_NAME, 'shopping_cart_link')
+    basket_link.click()
 
 
 @pytest.mark.positive_path
@@ -102,8 +110,7 @@ def test_remove_good_from_basket():
     browser = get_browser()
     login(browser)
     add_good_to_basket_from_catalogue(browser)
-    basket_link = browser.find_element(By.CLASS_NAME, 'shopping_cart_link')
-    basket_link.click()
+    go_to_basket(browser)
     remove_button = browser.find_element(By.CSS_SELECTOR, '#cart_contents_container>div>div button.cart_button')
     remove_button.click()
     assert len(browser.find_elements(By.CSS_SELECTOR, '.cart_item')) == 0
@@ -158,4 +165,43 @@ def test_remove_good_from_good_page():
     remove_button.click()
     assert len(browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')) == 0
     browser.quit()
+
+
+@pytest.mark.order
+@pytest.mark.positive_path
+def test_make_order():
+    expected_message = 'Checkout: Complete!'
+    browser = get_browser()
+
+    login(browser)
+    add_good_to_basket_from_catalogue(browser)
+    go_to_basket(browser)
+
+    checkout_button = browser.find_element(By.ID, 'checkout')
+    checkout_button.click()
+
+    first_name_field = browser.find_element(By.ID, 'first-name')
+    first_name_field.clear()
+    first_name_field.send_keys(fake.name())
+
+    last_name_field = browser.find_element(By.ID, 'last-name')
+    last_name_field.clear()
+    last_name_field.send_keys(fake.name())
+
+    postal_code_field = browser.find_element(By.ID, 'postal-code')
+    postal_code_field.clear()
+    postal_code_field.send_keys(random.randint(100000, 999999))
+
+    continue_button = browser.find_element(By.ID, 'continue')
+    continue_button.click()
+
+    finish_button = browser.find_element(By.ID, 'finish')
+    finish_button.click()
+
+    successful_message = browser.find_element(By.CSS_SELECTOR, '.header_secondary_container>span.title').text
+    assert successful_message == expected_message
+    browser.quit()
+
+
+
 
