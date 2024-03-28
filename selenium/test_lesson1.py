@@ -7,9 +7,8 @@ import random
 import pytest
 from faker import Faker
 
-
 base_url = 'https://www.saucedemo.com/'
-accepted_usernames = ['standard_user',  'problem_user', 'performance_glitch_user',
+accepted_usernames = ['standard_user', 'problem_user', 'performance_glitch_user',
                       'error_user', 'visual_user']
 PASSWORD = 'secret_sauce'
 fake = Faker()
@@ -79,7 +78,7 @@ def test_positive_auth():
     login_button = browser.find_element(By.ID, 'login-button')
     login_button.click()
 
-    assert browser.current_url == target_url
+    assert browser.current_url == target_url, "URLs don't match, user didn't log in"
     browser.quit()
 
 
@@ -104,7 +103,7 @@ def test_negative_auth():
         error_container = None
         print('There are no error container')
 
-    assert error_container.text == error_message
+    assert error_container.text == error_message, "There's no error message, user logged in but shouldn't"
     browser.quit()
 
 
@@ -117,7 +116,7 @@ def test_add_good_to_basket():
     add_good_to_basket_from_catalogue(browser)
 
     basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
-    assert basket_badge.text == '1'
+    assert basket_badge.text == '1', "There's no badge on the basket, a good wasn't added to basket"
     browser.quit()
 
 
@@ -132,7 +131,8 @@ def test_remove_good_from_basket():
 
     remove_button = browser.find_element(By.CSS_SELECTOR, '#cart_contents_container>div>div button.cart_button')
     remove_button.click()
-    assert len(browser.find_elements(By.CSS_SELECTOR, '.cart_item')) == 0
+    assert len(browser.find_elements(By.CSS_SELECTOR, '.cart_item')) == 0, "There is still be a badge on the basket, " \
+                                                                           "a good wasn't remover from basket"
     browser.quit()
 
 
@@ -147,7 +147,9 @@ def test_go_to_good_page_through_image():
     good_image = browser.find_element(By.CSS_SELECTOR, '#inventory_container>div>div:first-child'
                                                        '>div.inventory_item_img>a')
     good_image.click()
-    assert browser.find_element(By.CLASS_NAME, 'inventory_details_name').text == good_name
+    assert browser.find_element(
+        By.CLASS_NAME, 'inventory_details_name'
+    ).text == good_name, "The good name and expected name don't match, there is a wrong page opened"
     browser.quit()
 
 
@@ -158,10 +160,12 @@ def test_go_to_good_page_through_title():
     login(browser)
 
     good_title = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
-                                                      'div.inventory_item_name')
+                                                       'div.inventory_item_name')
     good_name = good_title.text
     good_title.click()
-    assert browser.find_element(By.CLASS_NAME, 'inventory_details_name').text == good_name
+    assert browser.find_element(
+        By.CLASS_NAME, 'inventory_details_name'
+    ).text == good_name, "The good name and expected name don't match, there is a wrong page opened"
     browser.quit()
 
 
@@ -175,7 +179,7 @@ def test_add_good_to_basket_from_good_page():
     add_good_to_basket_from_good_page(browser)
 
     basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
-    assert basket_badge.text == '1'
+    assert basket_badge.text == '1', "There's no badge on the basket, a good wasn't added to basket"
     browser.quit()
 
 
@@ -190,7 +194,9 @@ def test_remove_good_from_good_page():
 
     remove_button = browser.find_element(By.CSS_SELECTOR, '.inventory_details_desc_container button')
     remove_button.click()
-    assert len(browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')) == 0
+    assert len(
+        browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')
+    ) == 0, "There is still be a badge on the basket, a good wasn't remover from basket"
     browser.quit()
 
 
@@ -226,7 +232,7 @@ def test_make_order():
     finish_button.click()
 
     successful_message = browser.find_element(By.CSS_SELECTOR, '.header_secondary_container>span.title').text
-    assert successful_message == expected_message
+    assert successful_message == expected_message, "There's no successful message, the order isn't completed"
     browser.quit()
 
 
@@ -246,7 +252,7 @@ def test_filter_a_to_z():
     name_items = [i.text for i in item_list]
     sorted_items = sorted(name_items)
 
-    assert name_items == sorted_items
+    assert name_items == sorted_items, "Items aren't sorted according to filter option"
     browser.quit()
 
 
@@ -266,7 +272,7 @@ def test_filter_z_to_a():
     name_items = [i.text for i in item_list]
     sorted_items = sorted(name_items, reverse=True)
 
-    assert name_items == sorted_items
+    assert name_items == sorted_items, "Items aren't sorted according to filter option"
     browser.quit()
 
 
@@ -286,7 +292,7 @@ def test_filter_hi_to_low():
     prices = [float(i.text[1:]) for i in item_list]
     sorted_items = sorted(prices, reverse=True)
 
-    assert prices == sorted_items
+    assert prices == sorted_items, "Items aren't sorted according to filter option"
     browser.quit()
 
 
@@ -306,7 +312,7 @@ def test_filter_low_to_hi():
     prices = [float(i.text[1:]) for i in item_list]
     sorted_items = sorted(prices)
 
-    assert prices == sorted_items
+    assert prices == sorted_items, "Items aren't sorted according to filter option"
     browser.quit()
 
 
@@ -359,4 +365,3 @@ def test_reset_app_state():
     assert len(browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')) == 0, 'There are still goods in ' \
                                                                                          'the basket'
     browser.quit()
-
