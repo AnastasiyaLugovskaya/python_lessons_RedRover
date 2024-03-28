@@ -324,3 +324,20 @@ def test_log_out():
 
     assert browser.current_url == base_url, "URLs don't match, logout didn't happen"
     browser.quit()
+
+
+@pytest.mark.burger
+@pytest.mark.xfail
+def test_about_button():
+    browser = get_browser()
+
+    login(browser)
+
+    burger_menu = browser.find_element(By.ID, 'react-burger-menu-btn')
+    burger_menu.click()
+
+    about_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'about_sidebar_link')))
+    about_link.click()
+
+    assert browser.find_element(By.TAG_NAME, 'body').text != '403 Forbidden', "There is an error on the page"
+    browser.quit()
