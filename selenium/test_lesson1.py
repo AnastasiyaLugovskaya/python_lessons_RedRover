@@ -222,7 +222,7 @@ def test_make_order():
     continue_button = browser.find_element(By.ID, 'continue')
     continue_button.click()
 
-    finish_button = browser.find_element(By.ID, 'finish')
+    finish_button = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'finish')))
     finish_button.click()
 
     successful_message = browser.find_element(By.CSS_SELECTOR, '.header_secondary_container>span.title').text
