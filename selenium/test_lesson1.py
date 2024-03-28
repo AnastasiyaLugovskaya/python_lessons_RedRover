@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import random
 import pytest
 from faker import Faker
@@ -307,3 +309,18 @@ def test_filter_low_to_hi():
     assert prices == sorted_items
     browser.quit()
 
+
+@pytest.mark.burger
+def test_log_out():
+    browser = get_browser()
+
+    login(browser)
+
+    burger_menu = browser.find_element(By.ID, 'react-burger-menu-btn')
+    burger_menu.click()
+
+    logout_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'logout_sidebar_link')))
+    logout_link.click()
+
+    assert browser.current_url == base_url, "URLs don't match, logout didn't happen"
+    browser.quit()
