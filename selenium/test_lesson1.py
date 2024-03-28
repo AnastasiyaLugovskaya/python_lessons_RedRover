@@ -341,3 +341,22 @@ def test_about_button():
 
     assert browser.find_element(By.TAG_NAME, 'body').text != '403 Forbidden', "There is an error on the page"
     browser.quit()
+
+
+@pytest.mark.burger
+def test_reset_app_state():
+    browser = get_browser()
+
+    login(browser)
+    add_good_to_basket_from_catalogue(browser)
+
+    burger_menu = browser.find_element(By.ID, 'react-burger-menu-btn')
+    burger_menu.click()
+
+    reset_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'reset_sidebar_link')))
+    reset_link.click()
+
+    assert len(browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')) == 0, 'There are still goods in ' \
+                                                                                         'the basket'
+    browser.quit()
+
