@@ -268,4 +268,42 @@ def test_filter_z_to_a():
     browser.quit()
 
 
+@pytest.mark.filter
+def test_filter_hi_to_low():
+    browser = get_browser()
+
+    login(browser)
+
+    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon.click()
+
+    za_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="hilo"]')
+    za_filter.click()
+
+    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_price'))
+    prices = [float(i.text[1:]) for i in item_list]
+    sorted_items = sorted(prices, reverse=True)
+
+    assert prices == sorted_items
+    browser.quit()
+
+
+@pytest.mark.filter
+def test_filter_low_to_hi():
+    browser = get_browser()
+
+    login(browser)
+
+    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon.click()
+
+    za_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="lohi"]')
+    za_filter.click()
+
+    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_price'))
+    prices = [float(i.text[1:]) for i in item_list]
+    sorted_items = sorted(prices)
+
+    assert prices == sorted_items
+    browser.quit()
 
