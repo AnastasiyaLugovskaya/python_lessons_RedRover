@@ -3,12 +3,9 @@ class AboutPage:
 
 
 class AuthorizationPage:
-    ACCEPTED_USERNAMES = ['standard_user', 'problem_user', 'performance_glitch_user',
-                          'error_user', 'visual_user']
     BASE_URL = 'https://www.saucedemo.com/'
     ERROR_CONTAINER = '.error-message-container>h3'
     LOGIN_BUTTON = 'login-button'
-    PASSWORD = 'secret_sauce'
     PASSWORD_FIELD = 'password'
     USERNAME_FIELD = 'user-name'
 
