@@ -33,6 +33,7 @@ class CataloguePage:
     HILO_FILTER = 'option[value="hilo"]'
     ITEM_LIST = 'inventory_item_name'
     LOHI_FILTER = 'option[value="lohi"]'
+    PRICE_LIST = 'inventory_item_price'
     ZA_FILTER = 'option[value="za"]'
 
 
