@@ -13,13 +13,7 @@ class AuthorizationPage:
 class BasketPage:
     BASKET_BADGE = '.cart_item'
     CHECKOUT_BUTTON = 'checkout'
-    CONTINUE_BUTTON = 'continue'
-    FINISH_BUTTON = 'finish'
-    FIRSTNAME_FIELD = 'first-name'
-    LASTNAME_FIELD = 'last-name'
-    POSTAL_CODE_FIELD = 'postal-code'
     REMOVE_BUTTON = '#cart_contents_container>div>div button.cart_button'
-    SUCCESSFUL_MESSAGE = '.header_secondary_container>span.title'
 
 
 class BurgerMenu:
@@ -53,3 +47,11 @@ class HeaderMenu:
     BASKET_BADGES = '.shopping_cart_link span'
     BASKET_LINK = 'shopping_cart_link'
 
+
+class OrderPage:
+    CONTINUE_BUTTON = 'continue'
+    FINISH_BUTTON = 'finish'
+    FIRSTNAME_FIELD = 'first-name'
+    LASTNAME_FIELD = 'last-name'
+    POSTAL_CODE_FIELD = 'postal-code'
+    SUCCESSFUL_MESSAGE = '.header_secondary_container>span.title'
