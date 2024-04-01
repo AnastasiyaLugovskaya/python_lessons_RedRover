@@ -3,15 +3,18 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from locators import AboutPage
+from locators import AuthorizationPage
+from locators import BasketPage
+from locators import BurgerMenu
+from locators import CataloguePage
+from locators import GoodPage
+from locators import HeaderMenu
+from locators import OrderPage
+import data
 import random
 import pytest
 from faker import Faker
-
-base_url = 'https://www.saucedemo.com/'
-accepted_usernames = ['standard_user', 'problem_user', 'performance_glitch_user',
-                      'error_user', 'visual_user']
-PASSWORD = 'secret_sauce'
-fake = Faker()
 
 
 def get_browser():
@@ -21,62 +24,50 @@ def get_browser():
 
 def login(browser):
     """this method is used to log in user in system"""
-    browser.get(base_url)
+    browser.get(AuthorizationPage.BASE_URL)
 
-    username_field = browser.find_element(By.ID, 'user-name')
+    username_field = browser.find_element(By.ID, AuthorizationPage.USERNAME_FIELD)
     username_field.clear()
-    username_field.send_keys(random.choice(accepted_usernames))
+    username_field.send_keys(random.choice(data.ACCEPTED_USERNAMES))
 
-    password_field = browser.find_element(By.ID, 'password')
+    password_field = browser.find_element(By.ID, AuthorizationPage.PASSWORD_FIELD)
     password_field.clear()
-    password_field.send_keys(PASSWORD)
+    password_field.send_keys(data.PASSWORD)
 
-    login_button = browser.find_element(By.ID, 'login-button')
+    login_button = browser.find_element(By.ID, AuthorizationPage.LOGIN_BUTTON)
     login_button.click()
 
 
 def add_good_to_basket_from_catalogue(browser):
     """this method is used to add the first good on the catalogue page to basket"""
-    add_to_basket_button = browser.find_element(By.CSS_SELECTOR,
-                                                'div#inventory_container.inventory_container>div>div:first-child button')
+    add_to_basket_button = browser.find_element(By.CSS_SELECTOR, CataloguePage.ADD_TO_BASKET_BUTTON)
     add_to_basket_button.click()
 
 
 def go_to_good_page(browser):
     """this method is used to move to the page of the first good in the catalogue"""
-    good_title = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
-                                                       'div.inventory_item_name')
+    good_title = browser.find_element(By.CSS_SELECTOR, CataloguePage.GOOD_TITLE)
     good_title.click()
 
 
 def add_good_to_basket_from_good_page(browser):
     """this method is used for adding a good to basket from the good page"""
-    add_button = browser.find_element(By.CSS_SELECTOR, '.inventory_details_desc_container button')
+    add_button = browser.find_element(By.CSS_SELECTOR, GoodPage.ADD_BUTTON)
     add_button.click()
 
 
 def go_to_basket(browser):
     """this method is used to move to basket page"""
-    basket_link = browser.find_element(By.CLASS_NAME, 'shopping_cart_link')
+    basket_link = browser.find_element(By.CLASS_NAME, HeaderMenu.BASKET_LINK)
     basket_link.click()
 
 
 @pytest.mark.positive_path
 @pytest.mark.auth
 def test_positive_auth():
+    target_url = CataloguePage.CATALOGUE_URL
     browser = get_browser()
-    target_url = 'https://www.saucedemo.com/inventory.html'
-
-    browser.get(base_url)
-
-    username_field = browser.find_element(By.ID, 'user-name')
-    username_field.send_keys(random.choice(accepted_usernames))
-
-    password_field = browser.find_element(By.ID, 'password')
-    password_field.send_keys(PASSWORD)
-
-    login_button = browser.find_element(By.ID, 'login-button')
-    login_button.click()
+    login(browser)
 
     assert browser.current_url == target_url, "URLs don't match, user didn't log in"
     browser.quit()
@@ -87,18 +78,18 @@ def test_negative_auth():
     browser = get_browser()
     error_message = 'Epic sadface: Username and password do not match any user in this service'
 
-    browser.get(base_url)
+    browser.get(AuthorizationPage.BASE_URL)
 
-    username_field = browser.find_element(By.ID, 'user-name')
+    username_field = browser.find_element(By.ID, AuthorizationPage.USERNAME_FIELD)
     username_field.send_keys('user')
 
-    password_field = browser.find_element(By.ID, 'password')
+    password_field = browser.find_element(By.ID, AuthorizationPage.PASSWORD_FIELD)
     password_field.send_keys('user')
 
-    login_button = browser.find_element(By.ID, 'login-button')
+    login_button = browser.find_element(By.ID, AuthorizationPage.LOGIN_BUTTON)
     login_button.click()
     try:
-        error_container = browser.find_element(By.CSS_SELECTOR, '.error-message-container>h3')
+        error_container = browser.find_element(By.CSS_SELECTOR, AuthorizationPage.ERROR_CONTAINER)
     except NoSuchElementException:
         error_container = None
         print('There are no error container')
@@ -115,7 +106,7 @@ def test_add_good_to_basket():
     login(browser)
     add_good_to_basket_from_catalogue(browser)
 
-    basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
+    basket_badge = browser.find_element(By.CLASS_NAME, HeaderMenu.BASKET_BADGE)
     assert basket_badge.text == '1', "There's no badge on the basket, a good wasn't added to basket"
     browser.quit()
 
@@ -129,10 +120,10 @@ def test_remove_good_from_basket():
     add_good_to_basket_from_catalogue(browser)
     go_to_basket(browser)
 
-    remove_button = browser.find_element(By.CSS_SELECTOR, '#cart_contents_container>div>div button.cart_button')
+    remove_button = browser.find_element(By.CSS_SELECTOR, BasketPage.REMOVE_BUTTON)
     remove_button.click()
-    assert len(browser.find_elements(By.CSS_SELECTOR, '.cart_item')) == 0, "There is still be a badge on the basket, " \
-                                                                           "a good wasn't remover from basket"
+    assert len(browser.find_elements(By.CSS_SELECTOR, HeaderMenu.BASKET_BADGES)) == 0, \
+        "There is still be a badge on the basket, a good wasn't remover from basket"
     browser.quit()
 
 
@@ -142,13 +133,11 @@ def test_go_to_good_page_through_image():
 
     login(browser)
 
-    good_name = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
-                                                      'div.inventory_item_name').text
-    good_image = browser.find_element(By.CSS_SELECTOR, '#inventory_container>div>div:first-child'
-                                                       '>div.inventory_item_img>a')
+    good_name = browser.find_element(By.CSS_SELECTOR, CataloguePage.GOOD_TITLE).text
+    good_image = browser.find_element(By.CSS_SELECTOR, CataloguePage.GOOD_IMAGE)
     good_image.click()
     assert browser.find_element(
-        By.CLASS_NAME, 'inventory_details_name'
+        By.CLASS_NAME, GoodPage.GOOD_TITLE
     ).text == good_name, "The good name and expected name don't match, there is a wrong page opened"
     browser.quit()
 
@@ -159,12 +148,11 @@ def test_go_to_good_page_through_title():
 
     login(browser)
 
-    good_title = browser.find_element(By.CSS_SELECTOR, '.inventory_list div:first-child .inventory_item_description '
-                                                       'div.inventory_item_name')
+    good_title = browser.find_element(By.CSS_SELECTOR, CataloguePage.GOOD_TITLE)
     good_name = good_title.text
     good_title.click()
     assert browser.find_element(
-        By.CLASS_NAME, 'inventory_details_name'
+        By.CLASS_NAME, GoodPage.GOOD_TITLE
     ).text == good_name, "The good name and expected name don't match, there is a wrong page opened"
     browser.quit()
 
@@ -178,7 +166,7 @@ def test_add_good_to_basket_from_good_page():
     go_to_good_page(browser)
     add_good_to_basket_from_good_page(browser)
 
-    basket_badge = browser.find_element(By.CLASS_NAME, 'shopping_cart_badge')
+    basket_badge = browser.find_element(By.CLASS_NAME, HeaderMenu.BASKET_BADGE)
     assert basket_badge.text == '1', "There's no badge on the basket, a good wasn't added to basket"
     browser.quit()
 
@@ -192,10 +180,10 @@ def test_remove_good_from_good_page():
     go_to_good_page(browser)
     add_good_to_basket_from_good_page(browser)
 
-    remove_button = browser.find_element(By.CSS_SELECTOR, '.inventory_details_desc_container button')
+    remove_button = browser.find_element(By.CSS_SELECTOR, GoodPage.REMOVE_BUTTON)
     remove_button.click()
     assert len(
-        browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')
+        browser.find_elements(By.CSS_SELECTOR, HeaderMenu.BASKET_BADGES)
     ) == 0, "There is still be a badge on the basket, a good wasn't remover from basket"
     browser.quit()
 
@@ -204,34 +192,35 @@ def test_remove_good_from_good_page():
 @pytest.mark.positive_path
 def test_make_order():
     expected_message = 'Checkout: Complete!'
+    fake = Faker()
     browser = get_browser()
 
     login(browser)
     add_good_to_basket_from_catalogue(browser)
     go_to_basket(browser)
 
-    checkout_button = browser.find_element(By.ID, 'checkout')
+    checkout_button = browser.find_element(By.ID, BasketPage.CHECKOUT_BUTTON)
     checkout_button.click()
 
-    first_name_field = browser.find_element(By.ID, 'first-name')
+    first_name_field = browser.find_element(By.ID, OrderPage.FIRSTNAME_FIELD)
     first_name_field.clear()
     first_name_field.send_keys(fake.name())
 
-    last_name_field = browser.find_element(By.ID, 'last-name')
+    last_name_field = browser.find_element(By.ID, OrderPage.LASTNAME_FIELD)
     last_name_field.clear()
     last_name_field.send_keys(fake.name())
 
-    postal_code_field = browser.find_element(By.ID, 'postal-code')
+    postal_code_field = browser.find_element(By.ID, OrderPage.POSTAL_CODE_FIELD)
     postal_code_field.clear()
     postal_code_field.send_keys(random.randint(100000, 999999))
 
-    continue_button = browser.find_element(By.ID, 'continue')
+    continue_button = browser.find_element(By.ID, OrderPage.CONTINUE_BUTTON)
     continue_button.click()
 
-    finish_button = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'finish')))
+    finish_button = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, OrderPage.FINISH_BUTTON)))
     finish_button.click()
 
-    successful_message = browser.find_element(By.CSS_SELECTOR, '.header_secondary_container>span.title').text
+    successful_message = browser.find_element(By.CSS_SELECTOR, OrderPage.SUCCESSFUL_MESSAGE).text
     assert successful_message == expected_message, "There's no successful message, the order isn't completed"
     browser.quit()
 
@@ -242,13 +231,13 @@ def test_filter_a_to_z():
 
     login(browser)
 
-    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon = browser.find_element(By.CLASS_NAME, CataloguePage.FILTER_ICON)
     filter_icon.click()
 
-    az_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="az"]')
+    az_filter = browser.find_element(By.CSS_SELECTOR, CataloguePage.AZ_FILTER)
     az_filter.click()
 
-    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_name'))
+    item_list = list(browser.find_elements(By.CLASS_NAME, CataloguePage.ITEM_LIST))
     name_items = [i.text for i in item_list]
     sorted_items = sorted(name_items)
 
@@ -262,13 +251,13 @@ def test_filter_z_to_a():
 
     login(browser)
 
-    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon = browser.find_element(By.CLASS_NAME, CataloguePage.FILTER_ICON)
     filter_icon.click()
 
-    za_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="za"]')
+    za_filter = browser.find_element(By.CSS_SELECTOR, CataloguePage.ZA_FILTER)
     za_filter.click()
 
-    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_name'))
+    item_list = list(browser.find_elements(By.CLASS_NAME, CataloguePage.ITEM_LIST))
     name_items = [i.text for i in item_list]
     sorted_items = sorted(name_items, reverse=True)
 
@@ -282,13 +271,13 @@ def test_filter_hi_to_low():
 
     login(browser)
 
-    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon = browser.find_element(By.CLASS_NAME, CataloguePage.FILTER_ICON)
     filter_icon.click()
 
-    za_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="hilo"]')
-    za_filter.click()
+    hilo_filter = browser.find_element(By.CSS_SELECTOR, CataloguePage.HILO_FILTER)
+    hilo_filter.click()
 
-    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_price'))
+    item_list = list(browser.find_elements(By.CLASS_NAME, CataloguePage.ITEM_LIST))
     prices = [float(i.text[1:]) for i in item_list]
     sorted_items = sorted(prices, reverse=True)
 
@@ -302,13 +291,13 @@ def test_filter_low_to_hi():
 
     login(browser)
 
-    filter_icon = browser.find_element(By.CLASS_NAME, 'product_sort_container')
+    filter_icon = browser.find_element(By.CLASS_NAME, CataloguePage.FILTER_ICON)
     filter_icon.click()
 
-    za_filter = browser.find_element(By.CSS_SELECTOR, 'option[value="lohi"]')
-    za_filter.click()
+    lohi_filter = browser.find_element(By.CSS_SELECTOR, CataloguePage.LOHI_FILTER)
+    lohi_filter.click()
 
-    item_list = list(browser.find_elements(By.CLASS_NAME, 'inventory_item_price'))
+    item_list = list(browser.find_elements(By.CLASS_NAME, CataloguePage.ITEM_LIST))
     prices = [float(i.text[1:]) for i in item_list]
     sorted_items = sorted(prices)
 
@@ -322,13 +311,13 @@ def test_log_out():
 
     login(browser)
 
-    burger_menu = browser.find_element(By.ID, 'react-burger-menu-btn')
+    burger_menu = browser.find_element(By.ID, BurgerMenu.BURGER_MENU)
     burger_menu.click()
 
-    logout_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'logout_sidebar_link')))
+    logout_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, BurgerMenu.LOGOUT_LINK)))
     logout_link.click()
 
-    assert browser.current_url == base_url, "URLs don't match, logout didn't happen"
+    assert browser.current_url == AuthorizationPage.BASE_URL, "URLs don't match, logout didn't happen"
     browser.quit()
 
 
@@ -339,13 +328,13 @@ def test_about_button():
 
     login(browser)
 
-    burger_menu = browser.find_element(By.ID, 'react-burger-menu-btn')
+    burger_menu = browser.find_element(By.ID, BurgerMenu.BURGER_MENU)
     burger_menu.click()
 
-    about_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'about_sidebar_link')))
+    about_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, BurgerMenu.ABOUT_LINK)))
     about_link.click()
 
-    assert browser.find_element(By.TAG_NAME, 'body').text != '403 Forbidden', "There is an error on the page"
+    assert browser.find_element(By.TAG_NAME, AboutPage.BODY).text != '403 Forbidden', "There is an error on the page"
     browser.quit()
 
 
@@ -356,12 +345,12 @@ def test_reset_app_state():
     login(browser)
     add_good_to_basket_from_catalogue(browser)
 
-    burger_menu = browser.find_element(By.ID, 'react-burger-menu-btn')
+    burger_menu = browser.find_element(By.ID, BurgerMenu.BURGER_MENU)
     burger_menu.click()
 
-    reset_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, 'reset_sidebar_link')))
+    reset_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.ID, BurgerMenu.RESET_LINK)))
     reset_link.click()
 
-    assert len(browser.find_elements(By.CSS_SELECTOR, '.shopping_cart_link span')) == 0, 'There are still goods in ' \
-                                                                                         'the basket'
+    assert len(browser.find_elements(By.CSS_SELECTOR, HeaderMenu.BASKET_BADGES)) == 0, \
+        'There are still goods in the basket'
     browser.quit()
