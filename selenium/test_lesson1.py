@@ -185,7 +185,7 @@ def test_make_order(browser):
     continue_button = browser.find_element(*OrderPage.CONTINUE_BUTTON)
     continue_button.click()
 
-    finish_button = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(*OrderPage.FINISH_BUTTON))
+    finish_button = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(OrderPage.FINISH_BUTTON))
     finish_button.click()
 
     successful_message = browser.find_element(*OrderPage.SUCCESSFUL_MESSAGE).text
@@ -267,7 +267,7 @@ def test_log_out(browser):
     burger_menu = browser.find_element(*BurgerMenu.BURGER_MENU)
     burger_menu.click()
 
-    logout_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(*BurgerMenu.LOGOUT_LINK))
+    logout_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(BurgerMenu.LOGOUT_LINK))
     logout_link.click()
 
     assert browser.current_url == Url.BASE_URL, "URLs don't match, logout didn't happen"
@@ -281,7 +281,7 @@ def test_about_button(browser):
     burger_menu = browser.find_element(*BurgerMenu.BURGER_MENU)
     burger_menu.click()
 
-    about_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(*BurgerMenu.ABOUT_LINK))
+    about_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(BurgerMenu.ABOUT_LINK))
     about_link.click()
 
     assert browser.find_element(*AboutPage.BODY).text != '403 Forbidden', "There is an error on the page"
@@ -295,7 +295,7 @@ def test_reset_app_state(browser):
     burger_menu = browser.find_element(*BurgerMenu.BURGER_MENU)
     burger_menu.click()
 
-    reset_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(*BurgerMenu.RESET_LINK))
+    reset_link = WebDriverWait(browser, 3).until(EC.element_to_be_clickable(BurgerMenu.RESET_LINK))
     reset_link.click()
 
     assert len(browser.find_elements(*HeaderMenu.BASKET_BADGES)) == 0, \
