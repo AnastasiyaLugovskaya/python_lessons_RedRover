@@ -1,0 +1,11 @@
+class CataloguePage:
+    ADD_TO_BASKET_BUTTON = ('css selector', 'div#inventory_container.inventory_container>div>div:first-child button')
+    AZ_FILTER = ('css selector', 'option[value="az"]')
+    FILTER_ICON = ('css selector', '#product_sort_container')
+    GOOD_IMAGE = ('css selector', '#inventory_container>div>div:first-child>div.inventory_item_img>a')
+    GOOD_TITLE = ('css selector', '.inventory_list div:first-child .inventory_item_description div.inventory_item_name')
+    HILO_FILTER = ('css selector', 'option[value="hilo"]')
+    ITEM_LIST = ('css selector', '#inventory_item_name')
+    LOHI_FILTER = ('css selector', 'option[value="lohi"]')
+    PRICE_LIST = ('css selector', '#inventory_item_price')
+    ZA_FILTER = ('css selector', 'option[value="za"]')
