@@ -1,11 +1,11 @@
 from .base_page import BasePage
-from selenium_rr.locators.auth_page_locators import AuthorizationPage
+from selenium_rr.locators.auth_page_locators import AuthorizationPageLocators
 from selenium_rr.data.user_data import UserData
 import random
 
 
 class LoginPage(BasePage):
-    auth_locators = AuthorizationPage()
+    auth_locators = AuthorizationPageLocators()
     user_data = UserData()
 
     def __init__(self, browser, url):
