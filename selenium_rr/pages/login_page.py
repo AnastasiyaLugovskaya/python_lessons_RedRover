@@ -12,6 +12,7 @@ class LoginPage(BasePage):
         super().__init__(browser, url)
 
     def login_with_valid_data(self):
+        """this method is used to log in with valid credentials"""
         self.element_is_visible(self.auth_locators.USERNAME_FIELD).send_keys(
             random.choice(self.user_data.ACCEPTED_USERNAMES)
         )
@@ -19,6 +20,7 @@ class LoginPage(BasePage):
         self.element_is_clickable(self.auth_locators.LOGIN_BUTTON).click()
 
     def login_with_invalid_data(self):
+        """this method is used to attempt to log in with invalid credentials"""
         self.element_is_visible(self.auth_locators.USERNAME_FIELD).send_keys(self.user_data.INVALID_USERNAME)
         self.element_is_visible(self.auth_locators.PASSWORD_FIELD).send_keys(self.user_data.INVALID_PASSWORD)
         self.element_is_clickable(self.auth_locators.LOGIN_BUTTON).click()
