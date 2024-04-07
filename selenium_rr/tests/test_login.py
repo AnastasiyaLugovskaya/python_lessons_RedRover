@@ -1,4 +1,3 @@
-from selenium.common import NoSuchElementException
 from selenium_rr.data.urls import Url
 from selenium_rr.pages.login_page import LoginPage
 from selenium_rr.locators.auth_page_locators import AuthorizationPageLocators
