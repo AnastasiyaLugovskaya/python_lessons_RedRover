@@ -1,2 +1,2 @@
-class AboutPage:
+class AboutPageLocators:
     BODY = ('css selector', 'body')

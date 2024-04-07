@@ -1,4 +1,4 @@
-class OrderPage:
+class OrderPageLocators:
     CONTINUE_BUTTON = ('css selector', '#continue')
     FINISH_BUTTON = ('css selector', '#finish')
     FIRSTNAME_FIELD = ('css selector', '#first-name')

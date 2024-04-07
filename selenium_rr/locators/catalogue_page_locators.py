@@ -1,4 +1,4 @@
-class CataloguePage:
+class CataloguePageLocators:
     ADD_TO_BASKET_BUTTON = ('css selector', 'div#inventory_container.inventory_container>div>div:first-child button')
     AZ_FILTER = ('css selector', 'option[value="az"]')
     FILTER_ICON = ('css selector', '.product_sort_container')

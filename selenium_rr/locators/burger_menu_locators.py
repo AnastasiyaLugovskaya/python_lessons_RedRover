@@ -1,4 +1,4 @@
-class BurgerMenu:
+class BurgerMenuLocators:
     ABOUT_LINK = ('css selector', '#about_sidebar_link')
     BURGER_MENU = ('css selector', '#react-burger-menu-btn')
     LOGOUT_LINK = ('css selector', '#logout_sidebar_link')
