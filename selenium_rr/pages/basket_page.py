@@ -1,8 +1,8 @@
 from selenium_rr.locators.basket_page_locators import BasketPageLocators
-from selenium_rr.pages.base_page import BasePage
+from selenium_rr.pages.header_menu import HeaderMenu
 
 
-class BasketPage(BasePage):
+class BasketPage(HeaderMenu):
     basket_locators = BasketPageLocators()
 
     def __init__(self, browser, url):

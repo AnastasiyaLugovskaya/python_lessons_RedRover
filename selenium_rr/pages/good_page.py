@@ -1,8 +1,8 @@
 from selenium_rr.locators.good_page_locators import GoodPageLocators
-from selenium_rr.pages.base_page import BasePage
+from selenium_rr.pages.header_menu import HeaderMenu
 
 
-class GoodPage(BasePage):
+class GoodPage(HeaderMenu):
     good_page_locators = GoodPageLocators()
 
     def __init__(self, browser, url):
