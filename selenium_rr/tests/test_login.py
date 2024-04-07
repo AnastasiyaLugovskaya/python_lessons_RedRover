@@ -1,12 +1,12 @@
 from selenium.common import NoSuchElementException
 from selenium_rr.data.urls import Url
 from selenium_rr.pages.login_page import LoginPage
-from selenium_rr.locators.auth_page_locators import AuthorizationPage
+from selenium_rr.locators.auth_page_locators import AuthorizationPageLocators
 
 
 class TestLogin:
     url = Url()
-    auth_locators = AuthorizationPage()
+    auth_locators = AuthorizationPageLocators()
 
     def test_login_with_valid_data(self, browser):
         target_url = self.url.CATALOGUE_URL
@@ -22,12 +22,7 @@ class TestLogin:
         page = LoginPage(browser, url=self.url.BASE_URL)
         page.open()
         page.login_with_invalid_data()
-        try:
-            error_message = page.get_text(self.auth_locators.ERROR_CONTAINER)
-        except NoSuchElementException:
-            error_message = None
-            print('There are no error container')
+        error_message = page.get_error_message()
         assert target_message == error_message, \
             f"There's no error message, user logged in but shouldn't. Expected error message is '{target_message}'"\
             f"actual error message is '{error_message}'"
-

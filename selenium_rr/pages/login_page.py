@@ -1,3 +1,5 @@
+from selenium.common import NoSuchElementException
+
 from .base_page import BasePage
 from selenium_rr.locators.auth_page_locators import AuthorizationPageLocators
 from selenium_rr.data.user_data import UserData
@@ -24,3 +26,12 @@ class LoginPage(BasePage):
         self.element_is_visible(self.auth_locators.USERNAME_FIELD).send_keys(self.user_data.INVALID_USERNAME)
         self.element_is_visible(self.auth_locators.PASSWORD_FIELD).send_keys(self.user_data.INVALID_PASSWORD)
         self.element_is_clickable(self.auth_locators.LOGIN_BUTTON).click()
+
+    def get_error_message(self):
+        """this method is used for getting an error message during attempting log in with invalid credentials"""
+        try:
+            error_message = self.get_text(self.auth_locators.ERROR_CONTAINER)
+        except NoSuchElementException:
+            error_message = None
+            print('There are no error container')
+        return error_message
