@@ -8,5 +8,5 @@ class AboutPage(HeaderMenu):
         super().__init__(browser, url)
 
     def get_status_code(self):
-        response = functions.check_page_response(self.url)
+        response = functions.get_page_response(self.url)
         return response.status_code

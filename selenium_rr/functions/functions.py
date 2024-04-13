@@ -1,8 +1,8 @@
 import requests
 
 
-def check_page_response(url):
-    """this method is used to check page response"""
+def get_page_response(url):
+    """this method is used to get page response"""
     response = requests.get(url)
     return response
 
