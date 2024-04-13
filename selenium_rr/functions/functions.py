@@ -1,3 +1,12 @@
+import requests
+
+
+def check_page_response(url):
+    """this method is used to check page response"""
+    response = requests.get(url)
+    return response
+
+
 def get_names_of_goods(goods_list):
     """this method is used to get names of goods in a list"""
     name_items = [i.text for i in goods_list]
