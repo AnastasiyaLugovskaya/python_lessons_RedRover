@@ -5,13 +5,16 @@ from selenium_rr.locators.auth_page_locators import AuthorizationPageLocators
 from selenium_rr.data.user_data import UserData
 import random
 
+from ..data.urls import Url
+
 
 class LoginPage(BasePage):
     auth_locators = AuthorizationPageLocators()
     user_data = UserData()
+    url = Url().BASE_URL
 
-    def __init__(self, browser, url):
-        super().__init__(browser, url)
+    def __init__(self, browser):
+        super().__init__(browser)
 
     def login_with_valid_data(self):
         """this method is used to log in with valid credentials"""

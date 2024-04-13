@@ -6,8 +6,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 class HeaderMenu(BasePage):
     header_locators = HeaderMenuLocators()
 
-    def __init__(self, browser, url):
-        super().__init__(browser, url)
+    def __init__(self, browser):
+        super().__init__(browser)
 
     def check_basket_badge_presence(self):
         """this method is used to check if there is a badge with numbers of added goods on the basket"""

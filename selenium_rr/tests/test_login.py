@@ -9,7 +9,7 @@ class TestLogin:
 
     def test_login_with_valid_data(self, browser):
         target_url = self.url.CATALOGUE_URL
-        page = LoginPage(browser, url=self.url.BASE_URL)
+        page = LoginPage(browser)
         page.open()
         page.login_with_valid_data()
         current_url = browser.current_url
@@ -18,7 +18,7 @@ class TestLogin:
 
     def test_login_with_invalid_data(self, browser):
         target_message = 'Epic sadface: Username and password do not match any user in this service'
-        page = LoginPage(browser, url=self.url.BASE_URL)
+        page = LoginPage(browser)
         page.open()
         page.login_with_invalid_data()
         error_message = page.get_error_message()

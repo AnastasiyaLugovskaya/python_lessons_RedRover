@@ -1,15 +1,17 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from selenium_rr.data.urls import Url
 from selenium_rr.locators.catalogue_page_locators import CataloguePageLocators
 from selenium_rr.pages.header_menu import HeaderMenu
 
 
 class CataloguePage(HeaderMenu):
     catalogue_page_locators = CataloguePageLocators()
+    url = Url().CATALOGUE_URL
 
-    def __init__(self, browser, url):
-        super().__init__(browser, url)
+    def __init__(self, browser):
+        super().__init__(browser)
 
     def add_good_to_basket_from_catalogue(self):
         """this method is used to add the first good on the catalogue page to basket"""

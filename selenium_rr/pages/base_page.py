@@ -1,13 +1,14 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium_rr.data.urls import Url
 
 
 class BasePage:
     timeout = 5
+    url = Url.BASE_URL
 
-    def __init__(self, browser, url):
+    def __init__(self, browser):
         self.browser = browser
-        self.url = url
 
     def all_elements_are_visible(self, locator):
         return WebDriverWait(self.browser, self.timeout).until(EC.visibility_of_all_elements_located(locator))
@@ -25,7 +26,7 @@ class BasePage:
         return len(self.browser.find_elements(*locator))
 
     def get_text(self, locator):
-        return self.browser.find_element(*locator).text
+        return self.element_is_visible(locator).text
 
-    def open(self):
-        self.browser.get(self.url)
+    def open(self, url=url):
+        self.browser.get(url)
