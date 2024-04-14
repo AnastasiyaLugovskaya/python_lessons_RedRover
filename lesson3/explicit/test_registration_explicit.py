@@ -1,7 +1,7 @@
 from lesson3.main_page import MainPage
 
 
-class TestRegistration:
+class TestRegistrationExplicit:
     def test_registration_explicit(self, browser):
         page = MainPage(browser)
         page.open()
