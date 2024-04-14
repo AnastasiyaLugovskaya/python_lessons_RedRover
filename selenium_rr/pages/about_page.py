@@ -10,5 +10,6 @@ class AboutPage(HeaderMenu):
         super().__init__(browser)
 
     def get_status_code(self):
+        """this method is used to get status code from the response"""
         response = functions.get_page_response(self.url)
         return response.status_code
