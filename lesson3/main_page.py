@@ -55,7 +55,7 @@ class MainPage:
         self.wait_until_element_is_visible_explicit(self.main_page_locators.PASSWORD_FIELD)\
             .send_keys(self.data.PASSWORD)
         checkbox = self.wait_until_element_is_clickable_explicit(self.main_page_locators.CHECKBOX)
-        if not self.is_checkbox_selected(checkbox):
+        if not self.is_checkbox_selected(self.main_page_locators.CHECKBOX):
             checkbox.click()
 
     def is_checkbox_selected(self, locator):
@@ -81,5 +81,54 @@ class MainPage:
         """this method is used to get the success message after completing a registration"""
         if self.check_success_message_appearance() is True:
             return self.get_text_explicit(self.main_page_locators.SUCCESS_MESSAGE)
+        else:
+            return "There's no success message"
+
+    def get_text_implicit(self, locator):
+        """this method is used to get text from an element"""
+        return self.browser.find_element(*locator).text
+
+    def get_header_text_implicit(self):
+        """this method is used to get text from a header on the main page"""
+        return self.get_text_explicit(self.main_page_locators.HEADER)
+
+    def click_start_test_button_implicit(self):
+        """this method is used to implicitly wait until the start test button appears on the page
+        and click on it"""
+        self.browser.find_element(*self.main_page_locators.START_TEST_BUTTON).click()
+
+    def fill_out_registration_fields_implicit(self):
+        """this method is used to implicitly wait until registration fields appear on the page
+        and then fill them out"""
+        self.browser.find_element(*self.main_page_locators.LOGIN_FIELD).send_keys(self.data.LOGIN)
+        self.browser.find_element(*self.main_page_locators.PASSWORD_FIELD)\
+            .send_keys(self.data.PASSWORD)
+        checkbox = self.browser.find_element(*self.main_page_locators.CHECKBOX)
+        if not self.is_checkbox_selected_implicit(self.main_page_locators.CHECKBOX):
+            checkbox.click()
+
+    def is_checkbox_selected_implicit(self, locator):
+        """this method is used to check if a checkbox is selected"""
+        checkbox = self.browser.find_element(*locator)
+        return checkbox.is_selected()
+
+    def click_register_button_implicit(self):
+        """this method is used to implicitly wait until the register button appears on the page
+        and click on it"""
+        self.browser.find_element(*self.main_page_locators.REGISTER_BUTTON).click()
+
+    def check_loader_appearance_implicit(self):
+        """this method is used to check appearance of a loader after clicking on the register button"""
+        return True if len(self.browser.find_elements(*self.main_page_locators.LOADER)) else False
+
+    def check_success_message_appearance_implicit(self):
+        """this method is used to check appearance of the success message after completing a registration"""
+        return True if len(self.browser.find_elements(self.main_page_locators.SUCCESS_MESSAGE)) \
+            else False
+
+    def get_success_message_implicit(self):
+        """this method is used to get the success message after completing a registration"""
+        if self.check_success_message_appearance() is True:
+            return self.get_text_implicit(self.main_page_locators.SUCCESS_MESSAGE)
         else:
             return "There's no success message"
