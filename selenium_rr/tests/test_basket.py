@@ -45,7 +45,7 @@ class TestBasket:
         page.open()
         page.login_with_valid_data()
         page = CataloguePage(browser)
-        page.go_to_good_page()
+        page.go_to_good_page_through_title()
         page = GoodPage(browser)
         page.add_good_to_basket_from_good_page()
         header = HeaderMenu(browser)

@@ -14,6 +14,10 @@ class GoodPage(HeaderMenu):
         """this method is used for adding a good to basket from the good page"""
         self.element_is_clickable(self.good_page_locators.ADD_BUTTON).click()
 
+    def get_good_name(self):
+        """this method is used to get the name of a good on a good page"""
+        return self.get_text(self.good_page_locators.GOOD_TITLE)
+
     def remove_good_from_basket_from_good_page(self):
         """this method is used for removing a good from basket from the good page"""
         self.element_is_clickable(self.good_page_locators.REMOVE_BUTTON).click()

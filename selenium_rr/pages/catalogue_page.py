@@ -17,6 +17,10 @@ class CataloguePage(HeaderMenu):
         """this method is used to add the first good on the catalogue page to basket"""
         self.element_is_clickable(self.catalogue_page_locators.ADD_TO_BASKET_BUTTON).click()
 
+    def get_good_name(self):
+        """this method is used to get the name of a good on a good page"""
+        return self.get_text(self.catalogue_page_locators.GOOD_TITLE)
+
     def get_goods_list(self):
         """this method is used to get list of all goods on the page"""
         goods_list = list(self.all_elements_are_visible(self.catalogue_page_locators.ITEM_LIST))
@@ -27,7 +31,11 @@ class CataloguePage(HeaderMenu):
         prices_list = list(self.all_elements_are_visible(self.catalogue_page_locators.PRICE_LIST))
         return prices_list
 
-    def go_to_good_page(self):
+    def go_to_good_page_through_good_image(self):
+        """this method is used to proceed to good page by clicking on a good image"""
+        self.element_is_clickable(self.catalogue_page_locators.GOOD_IMAGE).click()
+
+    def go_to_good_page_through_title(self):
         """this method is used to move to the page of the first good in the catalogue"""
         self.element_is_clickable(self.catalogue_page_locators.GOOD_TITLE).click()
 
