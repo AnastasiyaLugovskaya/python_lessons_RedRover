@@ -1,7 +1,10 @@
 from lesson3.main_page import MainPage
+import allure
 
 
+@allure.epic("Test using implicit waits")
 class TestRegistrationImplicit:
+    @allure.title("registration with implicit waits")
     def test_registration_implicit(self, browser):
         page = MainPage(browser)
         page.open()
