@@ -1,8 +1,13 @@
 import time
+
+import allure
+
 from lesson3.main_page import MainPage
 
 
+@allure.epic("Test using time.sleep()")
 class TestRegistrationTimeSleep:
+    @allure.title("registration with waits based on time.sleep()")
     def test_registration_time_sleep(self, browser):
         page = MainPage(browser)
         page.open()
