@@ -1,3 +1,4 @@
+import allure
 from selenium.common import TimeoutException, NoSuchElementException
 
 from selenium_rr.data.urls import Url
@@ -12,6 +13,7 @@ class CheckoutOverviewPage(HeaderMenu):
     def __init__(self, browser):
         super().__init__(browser)
 
+    @allure.step("check there's a successful message")
     def check_successful_message_presence(self):
         """this method is used to check successful message presence after completing an order"""
         try:
@@ -19,10 +21,12 @@ class CheckoutOverviewPage(HeaderMenu):
         except (TimeoutException, NoSuchElementException):
             return 0
 
+    @allure.step("click finish button")
     def finish_order(self):
         """this method is used to complete an order"""
         self.element_is_clickable(self.checkout_locators.FINISH_BUTTON).click()
 
+    @allure.step("get success message")
     def get_successful_message(self):
         """this method is used to get a successful message after completing an order"""
         return self.get_text(self.checkout_locators.SUCCESSFUL_MESSAGE)

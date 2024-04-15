@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from selenium_rr.data.user_data import UserData
@@ -8,10 +9,12 @@ from selenium_rr.pages.login_page import LoginPage
 from selenium_rr.pages.order_page import OrderPage
 
 
+@allure.epic("Testing making order")
 class TestOrder:
     order_inv_data = UserData.ORDER_INVALID_DATA
     order_valid_data = UserData.ORDER_VALID_DATA
 
+    @allure.title("Test it's impossible to make an order with invalid data")
     @pytest.mark.parametrize("order_values", order_inv_data)
     def test_order_with_invalid_data(self, browser, order_values):
         page = LoginPage(browser)
@@ -31,6 +34,7 @@ class TestOrder:
             f"There's a wrong message: expected message is {order_values[3]}, " \
             f"actual message is {actual_error_message}"
 
+    @allure.title("Test successfully completing an order with valid data")
     def test_order_with_valid_data(self, browser):
         page = LoginPage(browser)
         page.open()

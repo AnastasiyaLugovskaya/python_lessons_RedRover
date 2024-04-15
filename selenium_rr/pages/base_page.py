@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium_rr.data.urls import Url
@@ -34,6 +35,7 @@ class BasePage:
         """this method is used to get text from an element"""
         return self.element_is_visible(locator).text
 
+    @allure.step("open a page")
     def open(self, url=url):
         """this method is used to open a page"""
         self.browser.get(url)

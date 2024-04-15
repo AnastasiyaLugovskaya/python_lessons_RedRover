@@ -1,9 +1,13 @@
+import allure
+
 from selenium_rr.functions import functions
 from selenium_rr.pages.catalogue_page import CataloguePage
 from selenium_rr.pages.login_page import LoginPage
 
 
+@allure.epic("Testing filter")
 class TestFilter:
+    @allure.title("Test 'a-z' filter option")
     def test_filter_a_to_z(self, browser):
         page = LoginPage(browser)
         page.open()
@@ -16,6 +20,7 @@ class TestFilter:
         assert target_list == goods_list, \
             "Items aren't sorted according to filter option"
 
+    @allure.title("Test 'z-a' filter option")
     def test_filter_z_to_a(self, browser):
         page = LoginPage(browser)
         page.open()
@@ -28,6 +33,7 @@ class TestFilter:
         assert target_list == names_list, \
             "Items aren't sorted according to filter option"
 
+    @allure.title("Test a filter option from higher to lower price")
     def test_filter_hi_to_low(self, browser):
         page = LoginPage(browser)
         page.open()
@@ -40,6 +46,7 @@ class TestFilter:
         assert target_list == prices_list, \
             "Items aren't sorted according to filter option"
 
+    @allure.title("Test a filter option from lower to higher price")
     def test_filter_low_to_hi(self, browser):
         page = LoginPage(browser)
         page.open()

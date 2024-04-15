@@ -1,10 +1,14 @@
+import allure
+
 from selenium_rr.pages.catalogue_page import CataloguePage
 from selenium_rr.pages.good_page import GoodPage
 from selenium_rr.pages.header_menu import HeaderMenu
 from selenium_rr.pages.login_page import LoginPage
 
 
+@allure.epic("Testing a good page")
 class TestGoodPage:
+    @allure.title("Test moving to the first good's page by clicking on its image")
     def test_go_to_good_page_through_image(self, browser):
         page = LoginPage(browser)
         page.open()
@@ -18,6 +22,7 @@ class TestGoodPage:
             f"The good name and expected name don't match, there is a wrong page opened. " \
             f"Expected good name is '{good_name_in_catalogue}', actual good name is '{good_name_on_good_page}'"
 
+    @allure.title("Test moving to the first good's page by clicking on its title")
     def test_go_to_good_page_through_title(self, browser):
         page = LoginPage(browser)
         page.open()
@@ -31,6 +36,7 @@ class TestGoodPage:
             f"The good name and expected name don't match, there is a wrong page opened. " \
             f"Expected good name is '{good_name_in_catalogue}', actual good name is '{good_name_on_good_page}'"
 
+    @allure.title("Test removing a good from the basket by clicking on 'Remove' button on the good's page")
     def test_remove_good_from_good_page(self, browser):
         page = LoginPage(browser)
         page.open()

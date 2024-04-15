@@ -1,3 +1,5 @@
+import allure
+
 from selenium_rr.locators.catalogue_page_locators import CataloguePageLocators
 from selenium_rr.locators.header_menu_locators import HeaderMenuLocators
 from selenium_rr.pages.basket_page import BasketPage
@@ -7,10 +9,12 @@ from selenium_rr.pages.header_menu import HeaderMenu
 from selenium_rr.pages.login_page import LoginPage
 
 
+@allure.epic("Testing basket page")
 class TestBasket:
     catalogue_locators = CataloguePageLocators()
     header_locators = HeaderMenuLocators()
 
+    @allure.title("Test adding a good to the basket from the catalogue page")
     def test_add_good_to_basket_from_catalogue(self, browser):
         page = LoginPage(browser)
         page.open()
@@ -27,6 +31,7 @@ class TestBasket:
         else:
             return "There's no badge on the basket, a good wasn't added to basket"
 
+    @allure.title("Test removing a good from the basket")
     def test_remove_good_from_basket(self, browser):
         page = LoginPage(browser)
         page.open()
@@ -40,6 +45,7 @@ class TestBasket:
         goods_list_length = basket_page.check_numbers_of_added_goods()
         assert 0 == goods_list_length, f"There are still a good in the basket, a number of goods = {goods_list_length}"
 
+    @allure.title("Test adding a good to the basket from the good page")
     def test_add_good_to_basket_from_good_page(self, browser):
         page = LoginPage(browser)
         page.open()

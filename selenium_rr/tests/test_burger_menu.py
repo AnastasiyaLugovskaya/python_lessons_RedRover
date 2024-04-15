@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from selenium_rr.data.urls import Url
@@ -7,9 +8,11 @@ from selenium_rr.pages.catalogue_page import CataloguePage
 from selenium_rr.pages.login_page import LoginPage
 
 
+@allure.epic("Testing burger menu")
 class TestBurgerMenu:
     url = Url()
 
+    @allure.title("Test loging out from the system using a log out link in the burger menu")
     def test_logout(self, browser):
         target_url = self.url.BASE_URL
         page = LoginPage(browser)
@@ -22,6 +25,7 @@ class TestBurgerMenu:
         assert target_url == current_url, \
             f"URLs don't match, user didn't log out. Expected url is '{target_url}', current url is '{current_url}'"
 
+    @allure.title("Test moving to About page through a link in the burger menu")
     @pytest.mark.xfail
     def test_about_button(self, browser):
         page = LoginPage(browser)
@@ -36,6 +40,7 @@ class TestBurgerMenu:
         assert actual_response == expected_response, \
             f"Status code is {actual_response}, expected code is {expected_response}."
 
+    @allure.title("Test clearing up the basket using a link in the burger menu")
     def test_reset_app_state(self, browser):
         page = LoginPage(browser)
         page.open()
