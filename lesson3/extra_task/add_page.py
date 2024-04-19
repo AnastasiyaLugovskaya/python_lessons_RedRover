@@ -2,24 +2,19 @@ import allure
 from selenium import webdriver
 
 from lesson3.extra_task.add_page_locators import AddPageLocators
+from lesson3.extra_task.base_page import BasePage
 from lesson3.extra_task.urls import Url
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-class AddPage:
+class AddPage(BasePage):
     timeout = 10
     add_page_locators = AddPageLocators()
 
     def __init__(self, browser: webdriver.Chrome):
-        self.browser = browser
+        super().__init__(browser)
         self.url = Url.ADD_PAGE_URL
-
-    @allure.step("Open a page")
-    def open(self):
-        """this method is used to open a page"""
-        self.browser.get(self.url)
-        return self
 
     @allure.step("Click on add button")
     def click_on_add_button(self, number):

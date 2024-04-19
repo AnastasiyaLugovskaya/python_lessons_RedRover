@@ -2,4 +2,4 @@ __pycache__/
 .idea/
 allure_report/
 allure_result/
-
+hints.txt
