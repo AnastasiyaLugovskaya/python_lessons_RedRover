@@ -1,18 +1,13 @@
-import time
-
-import requests
-
 import allure
+import requests
 from selenium.common import NoSuchElementException
 from selenium.common import TimeoutException
-from selenium.webdriver import Keys
-from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 from lesson3.extra_task.auth_page_locators import AuthPageLocators
 from lesson3.extra_task.base_page import BasePage
 from lesson3.extra_task.urls import Url
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class AuthPage(BasePage):
