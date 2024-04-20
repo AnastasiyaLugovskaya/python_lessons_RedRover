@@ -34,26 +34,29 @@ class BrokenPage(BasePage):
     def get_src_attribute(self, image_list: list[WebElement]) -> list[str]:
         """this method is used to get value of 'src' attribute from <img> elements in the given list"""
         src_list = []
-        for i in image_list:
-            src_list.append(i.get_attribute("src"))
+        if len(image_list) > 0:
+            for i in image_list:
+                src_list.append(i.get_attribute("src"))
         return src_list
 
     @allure.step("Get server response")
     def get_server_response(self, src_list: list) -> list[Response]:
         """this method is used for sending a request with url from src list to the server and getting a response"""
         response_list = []
-        for i in src_list:
-            response = requests.get(i)
-            response_list.append(response)
+        if len(src_list) > 0:
+            for i in src_list:
+                response = requests.get(i)
+                response_list.append(response)
         return response_list
 
     @allure.step("Get status code for each image")
     def get_status_code(self, response_list: list[Response]) -> list[int]:
         """this method is used to get a status code from each response in the list"""
         status_code_list = []
-        for i in response_list:
-            code = i.status_code
-            status_code_list.append(code)
+        if len(response_list) > 0:
+            for i in response_list:
+                code = i.status_code
+                status_code_list.append(code)
         return status_code_list
 
     @allure.step("Check each image isn't broken")
@@ -65,10 +68,11 @@ class BrokenPage(BasePage):
         status_code_list = self.get_status_code(responses)
         images = dict()
         counter = 1
-        for i in status_code_list:
-            if i != 200:
-                images[counter] = False
-            else:
-                images[counter] = True
-            counter += 1
+        if len(status_code_list) > 0:
+            for i in status_code_list:
+                if i != 200:
+                    images[counter] = False
+                else:
+                    images[counter] = True
+                counter += 1
         return images
