@@ -1,6 +1,6 @@
 import allure
 
-from lesson3.extra_task.auth_page import AuthPage
+from lesson3.extra_task.pages.auth_page import AuthPage
 
 
 @allure.epic("Testing Authentication alerts")

@@ -1,8 +1,8 @@
 import allure
 from selenium import webdriver
 
-from lesson3.extra_task.add_page_locators import AddPageLocators
-from lesson3.extra_task.base_page import BasePage
+from lesson3.extra_task.locators.add_page_locators import AddPageLocators
+from lesson3.extra_task.pages.base_page import BasePage
 from lesson3.extra_task.urls import Url
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC

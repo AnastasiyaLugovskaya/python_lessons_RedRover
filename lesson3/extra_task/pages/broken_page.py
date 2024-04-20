@@ -4,8 +4,8 @@ from requests import Response
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 
-from lesson3.extra_task.base_page import BasePage
-from lesson3.extra_task.broken_page_locators import BrokenPageLocators
+from lesson3.extra_task.pages.base_page import BasePage
+from lesson3.extra_task.locators.broken_page_locators import BrokenPageLocators
 from lesson3.extra_task.urls import Url
 from selenium.common import NoSuchElementException
 from selenium.common import TimeoutException

@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from lesson3.extra_task.broken_page import BrokenPage
+from lesson3.extra_task.pages.broken_page import BrokenPage
 from lesson3.extra_task.functions import get_key_by_value
 
 

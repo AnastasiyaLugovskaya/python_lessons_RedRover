@@ -2,7 +2,7 @@ import random
 
 import allure
 
-from lesson3.extra_task.add_page import AddPage
+from lesson3.extra_task.pages.add_page import AddPage
 
 
 @allure.epic("Testing adding and removing an element")

@@ -5,8 +5,8 @@ from selenium.common import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from lesson3.extra_task.auth_page_locators import AuthPageLocators
-from lesson3.extra_task.base_page import BasePage
+from lesson3.extra_task.locators.auth_page_locators import AuthPageLocators
+from lesson3.extra_task.pages.base_page import BasePage
 from lesson3.extra_task.urls import Url
 
 
