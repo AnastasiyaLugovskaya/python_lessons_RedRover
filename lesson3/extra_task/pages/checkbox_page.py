@@ -32,7 +32,7 @@ class CheckboxPage(BasePage):
             self.is_box_checked(self.locators.SECOND_CHECKBOX)
     
     @allure.step("Check the box")
-    def check_the_box(self, num: int) -> WebElement:
+    def check_the_box(self, num: int):
         """this method is used to check the box.
         :num: is a number of the checkbox to select
 
