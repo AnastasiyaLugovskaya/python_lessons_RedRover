@@ -7,9 +7,19 @@ from luma.locators.home_page_locators import HomePageLocators
 
 
 class HomePage(BasePage):
+    locators = HomePageLocators()
 
-    def find_menu(self):
-        return s(HomePageLocators.HOME_PAGE_MENU)
+    def is_whats_new_link_present(self):
+        return self.find_element(self.locators.WHATS_NEW_LINK).should(be.present)
+
+    def is_menu_present(self):
+        return self.find_element(self.locators.HOME_PAGE_MENU).should(be.present)
+
+    # def find_menu(self):
+    #     return s(self.locators.HOME_PAGE_MENU)
+    #
+    # def find_whats_new_link(self):
+    #     return s(self.locators.WHATS_NEW_LINK)
 
     def visit(self):
         browser.open(self.url)
