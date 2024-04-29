@@ -1,5 +1,5 @@
 __pycache__/
 .idea/
-allure_report/
-allure_result/
+allure-report/
+out/
 hints.txt
