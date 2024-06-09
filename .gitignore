@@ -3,3 +3,4 @@ __pycache__/
 allure-report/
 out/
 hints.txt
+petstore_api/logs/
