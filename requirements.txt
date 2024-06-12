@@ -28,3 +28,4 @@ pycparser~=2.21
 future~=1.0.0
 wsproto~=1.2.0
 python-dotenv~=1.0.1
+pydantic~=2.7.3
