@@ -1,0 +1,18 @@
+{
+    "id": 55,
+    "category": {
+        "id": 56,
+        "name": "pokemon"
+    },
+    "name": "Bulbasaur",
+    "photoUrls": [
+        "string"
+    ],
+    "tags": [
+        {
+            "id": 5,
+            "name": "pokemon"
+        }
+    ],
+    "status": "available"
+}
