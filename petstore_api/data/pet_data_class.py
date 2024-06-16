@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 
+from petstore_api.src.schemas.pet_request_schema import Category
+
+
 @dataclass
 class PetDataClass:
     uid: int
-    category: dict
+    category: Category
     name: str
-    photo_urls: str
-    tags: dict
+    photo_urls: list[str]
+    tags: list
     status: str

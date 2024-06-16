@@ -4,12 +4,7 @@ import allure
 from requests import Response
 
 
-class BaseTestData:
-    @staticmethod
-    def convert_data_to_json(data):
-        json_data = json.dumps(data)
-        return json_data
-
+class BaseModule:
     @staticmethod
     def attach_request(request):
         request = json.dumps(json.loads(request.json()), indent=4)

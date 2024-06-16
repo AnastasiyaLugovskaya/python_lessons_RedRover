@@ -3,6 +3,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
+from petstore_api.src.prepared_data.base_data import BaseTestData
+
 load_dotenv()
 
 
@@ -34,6 +36,7 @@ class MyRequests:
                 data=data,
                 headers=headers,
                 cookies=cookies)
+            BaseTestData.attach_response(response=response)
             return response
         except Exception as e:
             raise e

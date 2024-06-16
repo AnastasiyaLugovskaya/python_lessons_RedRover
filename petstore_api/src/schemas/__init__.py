@@ -1,5 +1,5 @@
-from petstore_api.src.schemas import create_pet_schema
+from petstore_api.src.schemas import pet_response_schema
 
 
 class CreatePetSchema:
-    create_pet = create_pet_schema.CreatePetSchema
+    create_pet = pet_response_schema.CreatePetSchema
